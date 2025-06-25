@@ -29,9 +29,13 @@ public class ResourceEventSerializer implements JsonSerializer<ResourceEvent> {
         jsonObject.addProperty("custom_02", resourceEvent.custom02());
         jsonObject.addProperty("custom_03", resourceEvent.custom03());
         jsonObject.addProperty("build", resourceEvent.build());
-        jsonObject.addProperty("event_id", "%s:%s:%s:%s".formatted(resourceEvent.flowType().name().toLowerCase(), resourceEvent.currency().name().toLowerCase(), resourceEvent.itemType(), resourceEvent.amount()));
+        jsonObject.addProperty("event_id", "%s:%s:%s:%s".formatted(capitalize(resourceEvent.flowType().name()), capitalize(resourceEvent.currency().name()), resourceEvent.itemType(), resourceEvent.itemId()));
         jsonObject.addProperty("amount", resourceEvent.amount());
         return jsonObject;
+    }
+
+    private String capitalize(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 
 }

@@ -31,6 +31,7 @@ public class BusinessEvent extends Event {
         this.itemId = itemId;
     }
 
+    @Builder
     public record ReceiptInformation(Store store, String receipt, String signature) {
 
         public enum Store {

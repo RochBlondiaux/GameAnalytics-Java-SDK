@@ -12,13 +12,8 @@ import com.google.gson.GsonBuilder;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.rochblondiaux.gameanalytics.adapter.BusinessEventSerializer;
-import me.rochblondiaux.gameanalytics.adapter.ErrorEventSerializer;
-import me.rochblondiaux.gameanalytics.adapter.ResourceEventSerializer;
-import me.rochblondiaux.gameanalytics.model.event.implementation.BusinessEvent;
-import me.rochblondiaux.gameanalytics.model.event.implementation.ErrorEvent;
-import me.rochblondiaux.gameanalytics.model.event.implementation.Event;
-import me.rochblondiaux.gameanalytics.model.event.implementation.ResourceEvent;
+import me.rochblondiaux.gameanalytics.adapter.*;
+import me.rochblondiaux.gameanalytics.model.event.implementation.*;
 import me.rochblondiaux.gameanalytics.request.InitRequest;
 import me.rochblondiaux.gameanalytics.response.InitResponse;
 import me.rochblondiaux.gameanalytics.utils.GzipUtil;
@@ -35,6 +30,8 @@ public class GameAnalytics {
             .registerTypeHierarchyAdapter(ResourceEvent.class, new ResourceEventSerializer())
             .registerTypeHierarchyAdapter(BusinessEvent.class, new BusinessEventSerializer())
             .registerTypeHierarchyAdapter(ErrorEvent.class, new ErrorEventSerializer())
+            .registerTypeHierarchyAdapter(DesignEvent.class, new DesignEventSerializer())
+            .registerTypeHierarchyAdapter(ProgressionEvent.class, new ProgressionEventSerializer())
             .create();
 
     private final String gameKey;
