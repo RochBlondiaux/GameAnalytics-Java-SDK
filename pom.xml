@@ -4,16 +4,52 @@
 
     <groupId>me.rochblondiaux</groupId>
     <artifactId>gameanalytics</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>GameAnalytics</name>
+    <description>A Java SDK for GameAnalytics, a service for game developers to track player behavior and game performance.</description>
+    <url>https://github.com/RochBlondiaux/GameAnalytics-Java-SDK</url>
 
     <!-- properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>21</java.version>
     </properties>
+
+    <!-- licenses -->
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <!-- developers -->
+    <developers>
+        <!-- Roch Blondiaux -->
+        <developer>
+            <id>kiwix</id>
+            <name>Roch Blondiaux</name>
+            <email>contact@roch-blondiaux.com</email>
+            <organizationUrl>https://vulkantechnologies.com</organizationUrl>
+            <url>https://roch-blondiaux.com</url>
+            <organization>Vulkan Technologies</organization>
+        </developer>
+    </developers>
+
+    <!-- scm -->
+    <scm>
+        <connection>scm:git:git://github.com/RochBlondiaux/GameAnalytics-Java-SDK.git</connection>
+        <developerConnection>scm:git:ssh://github.com:RochBlondiaux/GameAnalytics-Java-SDK.git</developerConnection>
+        <url>https://github.com/RochBlondiaux/GameAnalytics-Java-SDK/tree/main</url>
+    </scm>
+
+    <!-- issue management -->
+    <issueManagement>
+        <url>https://github.com/RochBlondiaux/GameAnalytics-Java-SDK/issues</url>
+        <system>github</system>
+    </issueManagement>
 
     <!-- dependencies -->
     <dependencies>
