@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-import me.rochblondiaux.gameanalytics.model.ConfigEntry;
+import me.rochblondiaux.gameanalytics.model.config.ConfigEntry;
 
 public record InitResponse(@SerializedName("server_ts") long serverTimestamp,
                            @SerializedName("configs") List<ConfigEntry> entries,

@@ -1,15 +1,24 @@
 package me.rochblondiaux.gameanalytics;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.rochblondiaux.gameanalytics.adapter.BusinessEventSerializer;
+import me.rochblondiaux.gameanalytics.adapter.ErrorEventSerializer;
+import me.rochblondiaux.gameanalytics.adapter.ResourceEventSerializer;
+import me.rochblondiaux.gameanalytics.model.event.implementation.BusinessEvent;
+import me.rochblondiaux.gameanalytics.model.event.implementation.ErrorEvent;
+import me.rochblondiaux.gameanalytics.model.event.implementation.Event;
+import me.rochblondiaux.gameanalytics.model.event.implementation.ResourceEvent;
 import me.rochblondiaux.gameanalytics.request.InitRequest;
 import me.rochblondiaux.gameanalytics.response.InitResponse;
 import me.rochblondiaux.gameanalytics.utils.GzipUtil;
@@ -22,7 +31,11 @@ public class GameAnalytics {
     public static final String PRODUCTION_ENDPOINT = "api.gameanalytics.com";
     public static final String SANDBOX_ENDPOINT = "sandbox-api.gameanalytics.com";
     public static final String VERSION = "rest api v2";
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeHierarchyAdapter(ResourceEvent.class, new ResourceEventSerializer())
+            .registerTypeHierarchyAdapter(BusinessEvent.class, new BusinessEventSerializer())
+            .registerTypeHierarchyAdapter(ErrorEvent.class, new ErrorEventSerializer())
+            .create();
 
     private final String gameKey;
     private final String secretKey;
@@ -60,8 +73,23 @@ public class GameAnalytics {
         return sendRequest(url.build(), request, InitResponse.class);
     }
 
+    public CompletableFuture<Void> sendEvents(List<Event> events) {
+        if (events.isEmpty())
+            return CompletableFuture.completedFuture(null);
+
+        HttpUrl.Builder url = new HttpUrl.Builder()
+                .scheme("https")
+                .host(endpoint)
+                .addPathSegment("v2")
+                .addPathSegment(this.gameKey)
+                .addPathSegment("events");
+
+        return sendRequest(url.build(), events, Void.class);
+    }
+
     private <T> CompletableFuture<T> sendRequest(HttpUrl url, Object content, Class<T> responseType) {
         String jsonContent = GSON.toJson(content);
+        System.out.println("Sending request to " + url + " with content: " + jsonContent);
         return sendRequest(url, jsonContent, responseType);
     }
 
@@ -102,8 +130,6 @@ public class GameAnalytics {
                                 String errorBody = body.string();
                                 future.completeExceptionally(new IOException("Unexpected response code: " + response.code() + " - " + errorBody));
                             }
-
-
                             return;
                         }
 
@@ -112,6 +138,11 @@ public class GameAnalytics {
                             future.complete(null);
                         } else {
                             System.out.println("Response: " + responseBody);
+                            if (responseType == Void.class) {
+                                future.complete(null);
+                                return;
+                            }
+
                             T result = GSON.fromJson(responseBody, responseType);
                             future.complete(result);
                         }
