@@ -86,7 +86,6 @@ public class GameAnalytics {
 
     private <T> CompletableFuture<T> sendRequest(HttpUrl url, Object content, Class<T> responseType) {
         String jsonContent = GSON.toJson(content);
-        System.out.println("Sending request to " + url + " with content: " + jsonContent);
         return sendRequest(url, jsonContent, responseType);
     }
 
@@ -134,7 +133,6 @@ public class GameAnalytics {
                         if (responseBody.isEmpty()) {
                             future.complete(null);
                         } else {
-                            System.out.println("Response: " + responseBody);
                             if (responseType == Void.class) {
                                 future.complete(null);
                                 return;
