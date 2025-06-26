@@ -32,6 +32,8 @@ public class GameAnalytics {
             .registerTypeHierarchyAdapter(ErrorEvent.class, new ErrorEventSerializer())
             .registerTypeHierarchyAdapter(DesignEvent.class, new DesignEventSerializer())
             .registerTypeHierarchyAdapter(ProgressionEvent.class, new ProgressionEventSerializer())
+            .registerTypeHierarchyAdapter(SessionStartEvent.class, new SessionStartSerializer())
+            .registerTypeHierarchyAdapter(SessionEndEvent.class, new SessionEndSerializer())
             .create();
 
     private final String gameKey;
